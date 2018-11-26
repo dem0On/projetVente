@@ -1,0 +1,72 @@
+{% extends "base.html.twig" %}
+
+
+
+{% block body %}
+
+	<h1> Projet 2 web : site de vente Espace client </h1>
+
+	<div class="row">
+		<div class="col-7">
+			les produits + liens
+			<table class="table table-bordered">
+				<caption>Produits</caption>
+				<thead>
+				<tr><th>nom</th><th>stock</th><th>type</th><th>prix</th><th>photo</th><th>Ajouter</th>
+				</tr>
+				</thead>
+                {% for produit in produits if produits is not empty %}
+				<tbody>
+				<tr>
+					<td>{{ produit.nom }}</td>
+					<td>{{ produit.stock }}</td>
+					<td>{{ produit.typeProduit_id }}</td>
+					<td>{{ produit.prix }}</td>
+					<td><img style="width:40px;height:40px" src="{{asset('/images/')}}{{ produit.photo }}" alt="image du produit" >
+					</td>
+					<td><form action="{{ url('panier.add',{id: produit.id}) }}" method="GET">
+							<input type="hidden" name="produit" value="{{ produit.id }}">
+							<button type="submit">Ajouter</button>
+						</form></td>
+
+				</tr>
+				</tbody>
+				{% endfor %}
+			</table>
+			les produits + liens
+		</div>
+		<div class="col-5">
+			le panier +liens
+			<table class="table table-bordered">
+				<caption>Paniers</caption>
+				<thead>
+				<tr><th>Nom du Produit</th><th>quantite</th><th>prix</th><th>prix total</th><th></th><th>supprimer</th>
+				</tr>
+				</thead>
+                {% for paniere in paniers if paniers is not empty %}
+				<tbody>
+
+				<td>{{ paniere.quantite }}</td>
+				<td>{{ paniere.prix }}</td>
+				<td>{{ paniere.prix_total }}</td>
+				<td></td>
+				<td><form action="{{ url('panier.del',{id: panier.produit_id}) }}" method="GET">
+						<input type="hidden" name="produit" value="{{ panier.produit_id }}">
+						<button type="submit">Supprimer</button>
+					</form></td>
+				<th></th>
+				</tbody>
+				{% endfor %}
+			</table>
+		</div>
+
+	</div>
+
+{% endblock %}
+
+
+
+
+
+
+
