@@ -36,15 +36,11 @@ class IndexController extends Controller
         }
         if($this->isGranted('ROLE_CLIENT')) {
             $produits=NULL;
-            $paniers = NULL;
-            $paniersFin = NULL;
-            $user = $this->getUser();
             $produitsRepo = $doctrine->getRepository(Produit::class);
-            $panierRepo = $doctrine->getRepository(Panier::class);
-            $conn = $this->get('database_connection');
-            $produits = $conn->fetchAll('SELECT * FROM produits');
-            $paniers = $panierRepo->findBy(array('user_id'=>2));
-           // return $this->redirectToRoute('panier.index');
+            $produits = $produitsRepo->findAll();
+            $paniers = NULL;
+            $paniers = $doctrine->getRepository(Panier::class)->findBy(['user_id' => $this->getUser()->getId()]);
+            // return $this->redirectToRoute('panier.index');
             dump($produits);
             dump($paniers);
             return new Response($twig->render('frontOff/frontOFFICE.html.twig', ['produits' => $produits,'paniers'=>$paniers]));

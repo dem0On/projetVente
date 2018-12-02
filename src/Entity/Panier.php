@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PanierRepository")
+ * @ORM\Table(name="panier")
  */
 class Panier
 {
@@ -17,17 +18,9 @@ class Panier
     private $id;
 
     /**
-     *
-     * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     * @ORM\Column(type="integer")
      */
     private $user_id;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Produit")
-     * @ORM\JoinColumn(name="produit_id", referencedColumnName="id")
-     */
-    private $produit_id;
 
     /**
      * @ORM\Column(type="date")
@@ -39,56 +32,94 @@ class Panier
      */
     private $quantite;
 
-    public function getId(): ?int
+    /**
+     * @ORM\ManyToOne(targetEntity="Produit")
+     * @ORM\JoinColumn(name="produit_id", referencedColumnName="id")
+     */
+    private $produit_id;
+
+    /**
+     * @return mixed
+     */
+    public function getId()
     {
         return $this->id;
     }
 
-    public function getUserId(): ?int
+    /**
+     * @param mixed $id
+     */
+    public function setId($id): void
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUserId()
     {
         return $this->user_id;
     }
 
-    public function setUserId(int $user_id): self
+    /**
+     * @param mixed $user_id
+     */
+    public function setUserId($user_id): void
     {
         $this->user_id = $user_id;
-
-        return $this;
     }
 
-    public function getProduitId(): ?int
-    {
-        return $this->produit_id;
-    }
-
-    public function setProduitId(int $produit_id): self
-    {
-        $this->produit_id = $produit_id;
-
-        return $this;
-    }
-
-    public function getDateAchat(): ?\DateTimeInterface
+    /**
+     * @return mixed
+     */
+    public function getDateAchat()
     {
         return $this->dateAchat;
     }
 
-    public function setDateAchat(\DateTimeInterface $dateAchat): self
+    /**
+     * @param mixed $dateAchat
+     */
+    public function setDateAchat($dateAchat): void
     {
         $this->dateAchat = $dateAchat;
-
-        return $this;
     }
 
-    public function getQuantite(): ?int
+    /**
+     * @return mixed
+     */
+    public function getQuantite()
     {
         return $this->quantite;
     }
 
-    public function setQuantite(int $quantite): self
+    /**
+     * @param mixed $quantite
+     */
+    public function setQuantite($quantite): void
     {
         $this->quantite = $quantite;
-
-        return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getProduitId()
+    {
+        return $this->produit_id;
+    }
+
+
+    public function setProduitId($produit_id): void
+    {
+        $this->produit_id = $produit_id;
+
+    }
+
+
+
+
+
+
 }

@@ -31,11 +31,15 @@ class PanierController extends Controller
         $panierRepo = $doctrine->getRepository(Panier::class);
         $em= $this->container->get('doctrine')->getManager();
         $panier= NULL;
-        $panier = $panierRepo->findBy(array('produit_id'=>$_GET["produit"]));
+        $produit_id = $request->get('produit');
+        $produit_id = intval($produit_id);
+        $produitRepo = $doctrine->getRepository(Produit::class);
+        $produit = $produitRepo->find($produit_id);
+        $panier = $panierRepo->findBy(array('produit_id'=>$_GET["produit"],'user_id'=>$this->getUser()->getId()));
             if($panier != NULL){
 
                 $repository = $em->getRepository(Panier::class);
-                $produitsAmodifier = $repository->findOneBy(['produit_id' => $_GET['produit']]);
+                $produitsAmodifier = $repository->findOneBy(array('produit_id' => $_GET['produit'],'user_id'=>$this->getUser()->getId()));
                 dump($produitsAmodifier);
                 $produitsAmodifier->setQuantite($produitsAmodifier->getQuantite()+1);
                 $em->persist($produitsAmodifier);
@@ -47,7 +51,7 @@ class PanierController extends Controller
                 $panierAdd->setDateAchat(new \DateTime());
                 $user = $this->getUser();
                 $panierAdd->setUserId($user->getId());
-                $panierAdd->setProduitId($_GET["produit"]);
+                $panierAdd->setProduitId($produit);
                 $em->persist($panierAdd);
                 $em->flush();
             }
@@ -67,10 +71,27 @@ class PanierController extends Controller
      */
     public function del(Request $request,Environment $twig, RegistryInterface $doctrine)
     {
-        $panierRepo = $doctrine->getRepository(Panier::class);
+        $conn = $this->get('database_connection');
+        $panierrepo = $doctrine->getRepository(Panier::class);
         $em= $this->container->get('doctrine')->getManager();
         $panier= NULL;
-        $panier = $panierRepo->findBy(array('produit_id'=>$_GET["produit"]));
+        $panier = $conn->fetchAll('SELECT panier.quantite FROM panier WHERE produit_id ='.$_GET["produit"]);
+        $panier = $panierrepo->findBy(array('produit_id'=> $_GET['produit'],'user_id'=>$this->getUser()->getId()));
+        dump($panier);
+
+            if($panier[0]->getQuantite() <= 1){
+                $repository = $em->getRepository(Panier::class);
+                $supp =$repository->findOneBy(['produit_id' => $_GET['produit']]);
+                dump($supp);
+                $em->remove($supp);
+                $em->flush($supp);
+            }else{
+                $panier[0]->setQuantite($panier[0]->getQuantite()-1);
+                $em->persist($panier[0]);
+                $em->flush();    // commit de
+            }
+
+        return $this->redirectToRoute('index.index');
     }
 
 }

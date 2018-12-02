@@ -19,6 +19,14 @@ class PanierRepository extends ServiceEntityRepository
         parent::__construct($registry, Panier::class);
     }
 
+
+   /* public function findAllWithSum(){
+
+        return $this->createQueryBuilder('p')
+            ->select('p.id,p.user_id,p.quantite,p.produit_id,(p.quantite * pr.prix) as total')
+            ->innerJoin()
+    }*/
+
 //    /**
 //     * @return Panier[] Returns an array of Panier objects
 //     */

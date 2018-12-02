@@ -20,7 +20,7 @@
 				<tr>
 					<td>{{ produit.nom }}</td>
 					<td>{{ produit.stock }}</td>
-					<td>{{ produit.typeProduit_id }}</td>
+					<td>{{ produit.typeProduitId.id }}</td>
 					<td>{{ produit.prix }}</td>
 					<td><img style="width:40px;height:40px" src="{{asset('/images/')}}{{ produit.photo }}" alt="image du produit" >
 					</td>
@@ -45,13 +45,13 @@
 				</thead>
                 {% for paniere in paniers if paniers is not empty %}
 				<tbody>
-
+				<td>{{ paniere.produitId.nom }}</td>
 				<td>{{ paniere.quantite }}</td>
-				<td>{{ paniere.prix }}</td>
-				<td>{{ paniere.prix_total }}</td>
+				<td>{{ paniere.produitId.prix }}</td>
+				<td>{{ paniere.quantite * paniere.produitId.prix }}</td>
 				<td></td>
-				<td><form action="{{ url('panier.del',{id: panier.produit_id}) }}" method="GET">
-						<input type="hidden" name="produit" value="{{ panier.produit_id }}">
+				<td><form action="{{ url('panier.del',{id: paniere.produitId.id}) }}" method="GET">
+						<input type="hidden" name="produit" value="{{ paniere.produitId.id }}">
 						<button type="submit">Supprimer</button>
 					</form></td>
 				<th></th>
