@@ -2,6 +2,8 @@
 // src/Entity/User.php
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -41,6 +43,7 @@ class User implements UserInterface, \Serializable
     public function __construct()
     {
         $this->isActive = true;
+        $this->commandes = new ArrayCollection();
         // may not be needed, see section on salt below
         // $this->salt = md5(uniqid('', true));
     }
@@ -97,6 +100,11 @@ class User implements UserInterface, \Serializable
      * @ORM\Column(name="roles", type="string", length=64)
      */
     private $roles;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Commande", mappedBy="user_id")
+     */
+    private $commandes;
 
     public function getRoles()
     {
@@ -181,6 +189,37 @@ class User implements UserInterface, \Serializable
     {
         // TODO: Implement __toString() method.
         return "username : ".$this->getUsername()." role: ".$this->getRoles()[0]." mdp:".$this->getPassword();
+    }
+
+    /**
+     * @return Collection|Commande[]
+     */
+    public function getCommandes(): Collection
+    {
+        return $this->commandes;
+    }
+
+    public function addCommande(Commande $commande): self
+    {
+        if (!$this->commandes->contains($commande)) {
+            $this->commandes[] = $commande;
+            $commande->setUserId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommande(Commande $commande): self
+    {
+        if ($this->commandes->contains($commande)) {
+            $this->commandes->removeElement($commande);
+            // set the owning side to null (unless already changed)
+            if ($commande->getUserId() === $this) {
+                $commande->setUserId(null);
+            }
+        }
+
+        return $this;
     }
 
 }

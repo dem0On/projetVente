@@ -110,7 +110,8 @@ class PanierController extends Controller
      * @Route("/panier/valid", name="panier.valid")
      */
     public function validPanier(Request $request,Environment $twig, RegistryInterface $doctrine){
-        return new Response($twig->render('frontOff/frontOFFICE.html.twig'));
+
+        return new Response($twig->render('frontOff/validCommande.html.twig'));
     }
 
 }
