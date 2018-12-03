@@ -34,17 +34,19 @@ class PanierController extends Controller
         $produit_id = $request->get('produit');
         $produit_id = intval($produit_id);
         $produitRepo = $doctrine->getRepository(Produit::class);
+        $stockproduit = $produitRepo->find($_GET["produit"]);
         $produit = $produitRepo->find($produit_id);
         $panier = $panierRepo->findBy(array('produit_id'=>$_GET["produit"],'user_id'=>$this->getUser()->getId()));
-            if($panier != NULL){
+        if($stockproduit->getstock() > 0) {
+            if ($panier != NULL) {
 
                 $repository = $em->getRepository(Panier::class);
-                $produitsAmodifier = $repository->findOneBy(array('produit_id' => $_GET['produit'],'user_id'=>$this->getUser()->getId()));
+                $produitsAmodifier = $repository->findOneBy(array('produit_id' => $_GET['produit'], 'user_id' => $this->getUser()->getId()));
                 dump($produitsAmodifier);
-                $produitsAmodifier->setQuantite($produitsAmodifier->getQuantite()+1);
+                $produitsAmodifier->setQuantite($produitsAmodifier->getQuantite() + 1);
                 $em->persist($produitsAmodifier);
                 $em->flush();    // commit des opérations
-            }else{
+            } else {
 
                 $panierAdd = new Panier();
                 $panierAdd->setQuantite(1);
@@ -55,8 +57,13 @@ class PanierController extends Controller
                 $em->persist($panierAdd);
                 $em->flush();
             }
-        return $this->redirectToRoute('index.index');
-
+            $stockproduit->setStock($stockproduit->getStock()-1);
+            $em->persist($stockproduit);
+            $em->flush();
+            return $this->redirectToRoute('index.index');
+        }else{
+            return $this->redirectToRoute('index.index');
+        }
     }
 
     /**
@@ -71,27 +78,39 @@ class PanierController extends Controller
      */
     public function del(Request $request,Environment $twig, RegistryInterface $doctrine)
     {
-        $conn = $this->get('database_connection');
         $panierrepo = $doctrine->getRepository(Panier::class);
-        $em= $this->container->get('doctrine')->getManager();
-        $panier= NULL;
-        $panier = $conn->fetchAll('SELECT panier.quantite FROM panier WHERE produit_id ='.$_GET["produit"]);
-        $panier = $panierrepo->findBy(array('produit_id'=> $_GET['produit'],'user_id'=>$this->getUser()->getId()));
+        $produitrepo = $doctrine->getRepository(Produit::class);
+        $em = $this->container->get('doctrine')->getManager();
+        $panier = NULL;
+        $stockproduit = $produitrepo->find($_GET['produit']);
+
+        $panier = $panierrepo->findBy(array('produit_id' => $_GET['produit'], 'user_id' => $this->getUser()->getId()));
         dump($panier);
 
-            if($panier[0]->getQuantite() <= 1){
+            if ($panier[0]->getQuantite() <= 1) {
                 $repository = $em->getRepository(Panier::class);
-                $supp =$repository->findOneBy(['produit_id' => $_GET['produit']]);
+                $supp = $repository->findOneBy(['produit_id' => $_GET['produit']]);
                 dump($supp);
                 $em->remove($supp);
                 $em->flush($supp);
-            }else{
-                $panier[0]->setQuantite($panier[0]->getQuantite()-1);
+            } else {
+                $panier[0]->setQuantite($panier[0]->getQuantite() - 1);
                 $em->persist($panier[0]);
                 $em->flush();    // commit de
             }
+            $stockproduit->setStock($stockproduit->getStock() + 1);
+            $em->persist($stockproduit);
+            $em->flush();
 
-        return $this->redirectToRoute('index.index');
+            return $this->redirectToRoute('index.index');
+
+    }
+
+    /**
+     * @Route("/panier/valid", name="panier.valid")
+     */
+    public function validPanier(Request $request,Environment $twig, RegistryInterface $doctrine){
+        return new Response($twig->render('frontOff/frontOFFICE.html.twig'));
     }
 
 }
