@@ -85,4 +85,11 @@ class ProduitController extends Controller
         return new Response($twig->render('backOff/Produit/formProduit.html.twig',['form'=>$form->createView()]));
     }
 
+    /**
+     * @Route("/produit/show",name="produit.show")
+     */
+    public function showProduit(Request $request, Environment $twig, RegistryInterface $doctrine, FormFactoryInterface $formFactory){
+        $produit = $doctrine->getRepository(Produit::class)->findAll();
+        return new Response($twig->render('backOff/Produit/showProduits.html.twig',['produits'=>$produit]));
+    }
 }

@@ -1,0 +1,28 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+
+    <h1> Projet 2 web : Détails Commande</h1>
+    <table class="table table-bordered">
+        <caption>Paniers</caption>
+        <thead>
+        <tr><th>Nom produit</th><th>prix total</th><th>quantite</th>
+        </tr>
+        </thead>
+        {% for ligne in lignes if lignes is not empty %}
+            <tbody>
+            <td>{{ ligne.getProduitId().getNom() }}</td>
+            <td>{{ ligne.getPrix().getPrix() * ligne.quantite }}</td>
+            <td>{{ ligne.quantite }}</td>
+            </tbody>
+        {% endfor %}
+    </table>
+    <form action="{{ url('commande.showAllCommandes') }}"method="GET">
+        <button type="submit">Retour à la liste des commandes</button>
+    </form>
+    <form action="{{ url('index.index') }}"method="GET">
+        <button type="submit">Revenir au magasin</button>
+    </form>
+
+
+{% endblock %}

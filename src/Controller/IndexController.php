@@ -31,8 +31,7 @@ class IndexController extends Controller
 //        }
 
         if($this->isGranted('ROLE_ADMIN')) {
-            //return $this->redirectToRoute('admin.index');
-            return new Response($twig->render('backOff/backOFFICE.html.twig'));
+
         }
         if($this->isGranted('ROLE_CLIENT')) {
             $produits=NULL;
@@ -40,7 +39,6 @@ class IndexController extends Controller
             $produits = $produitsRepo->findAll();
             $paniers = NULL;
             $paniers = $doctrine->getRepository(Panier::class)->findBy(['user_id' => $this->getUser()->getId()]);
-            // return $this->redirectToRoute('panier.index');
             dump($produits);
             dump($paniers);
             return new Response($twig->render('frontOff/frontOFFICE.html.twig', ['produits' => $produits,'paniers'=>$paniers]));

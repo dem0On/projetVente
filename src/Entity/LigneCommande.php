@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use phpDocumentor\Reflection\Types\Integer;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\LigneCommandeRepository")
@@ -17,17 +18,20 @@ class LigneCommande
     private $id;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity="App\Entity\commande")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $commande_id;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Produit")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $produit_id;
 
     /**
-     * @ORM\Column(type="decimal", precision=6, scale=2)
+     * @ORM\ManyToOne(targetEntity="App\Entity\Produit")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $prix;
 
@@ -41,48 +45,48 @@ class LigneCommande
         return $this->id;
     }
 
-    public function getCommandeId(): ?int
+    public function getCommandeId(): ?commande
     {
         return $this->commande_id;
     }
 
-    public function setCommandeId(int $commande_id): self
+    public function setCommandeId(?commande $commande_id): self
     {
         $this->commande_id = $commande_id;
 
         return $this;
     }
 
-    public function getProduitId(): ?int
+    public function getProduitId(): ?Produit
     {
         return $this->produit_id;
     }
 
-    public function setProduitId(int $produit_id): self
+    public function setProduitId(?Produit $produit_id): self
     {
         $this->produit_id = $produit_id;
 
         return $this;
     }
 
-    public function getPrix()
+    public function getPrix(): ?Produit
     {
         return $this->prix;
     }
 
-    public function setPrix($prix): self
+    public function setPrix(?Produit $prix): self
     {
         $this->prix = $prix;
 
         return $this;
     }
 
-    public function getQuantite(): ?int
+    public function getQuantite()
     {
         return $this->quantite;
     }
 
-    public function setQuantite(int $quantite): self
+    public function setQuantite($quantite)
     {
         $this->quantite = $quantite;
 

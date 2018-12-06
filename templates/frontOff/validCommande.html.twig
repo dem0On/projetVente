@@ -2,8 +2,27 @@
 
 {% block body %}
 
-    <h1> Projet 2 web : Valider la commande </h1>
-
+    <h1> Projet 2 web : Veuillez verifier votre commande </h1>
+    <table class="table table-bordered">
+        <caption>Paniers</caption>
+        <thead>
+        <tr><th>Nom du Produit</th><th>quantite</th><th>prix total</th>
+        </tr>
+        </thead>
+        {% for paniere in paniers if paniers is not empty %}
+            <tbody>
+            <td>{{ paniere.produitId.nom }}</td>
+            <td>{{ paniere.quantite }}</td>
+            <td>{{ paniere.quantite * paniere.produitId.prix }}</td>
+            </tbody>
+        {% endfor %}
+    </table>
+    <form action="{{ url('commande.add') }}"method="GET">
+        <button type="submit">Commander</button>
+    </form>
+    <form action="{{ url('index.index') }}"method="GET">
+        <button type="submit">Retour a la page d'acceuil</button>
+    </form>
 
 
 {% endblock %}

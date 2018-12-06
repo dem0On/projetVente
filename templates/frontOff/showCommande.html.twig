@@ -1,0 +1,25 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+
+    <h1> Projet 2 web : Liste des commandes </h1>
+    <table class="table table-bordered">
+        <caption>Paniers</caption>
+        <thead>
+        <tr><th>n° commande</th><th>etat</th><th>Action</th>
+        </tr>
+        </thead>
+        {% for ligne in lignes if lignes is not empty %}
+            <tbody>
+            <td>{{ ligne.getId() }}</td>
+            <td>{{ ligne.etatId.getNom() }}</td>
+            <td><form action="{{ url('commande.consult',{id: ligne.getId()}) }}" method="GET">
+                    <input type="hidden" name="idCommande" value="{{ ligne.getId() }}">
+                    <button type="submit">Détails de la commande</button>
+                </form></td>
+            </tbody>
+        {% endfor %}
+    </table>
+
+
+{% endblock %}

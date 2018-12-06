@@ -15,7 +15,7 @@
                     Commandes
                 </a>
                 <div class="dropdown-menu" aria-labelledby="DropdownCommandes">
-                    <a class="dropdown-item" href="{#{  path('panier.show') }#}">Faire une commande(Produits/panier)</a>
+                    <a class="dropdown-item" href="{{  url('index.index') }}">Faire une commande(Produits/panier)</a>
                 </div>
             </li>
 
@@ -34,7 +34,7 @@
                     mon compte
                 </a>
                 <div class="dropdown-menu" aria-labelledby="DropdownComptes">
-                    <a class="dropdown-item" href="{#{ path('commande.showAllCommandes') }#}">mes commandes</a>
+                    <a class="dropdown-item" href="{{ url('commande.showAllCommandes') }}">mes commandes</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="{#path('user_registration_complete') }#}">mes coordonnées</a>
 
