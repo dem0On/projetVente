@@ -17,11 +17,8 @@
             </tbody>
         {% endfor %}
     </table>
-    <form action="{{ url('commande.showAllCommandes') }}"method="GET">
+    <form action="{{ url('gestion.commande.show') }}"method="GET">
         <button type="submit">Retour à la liste des commandes</button>
-    </form>
-    <form action="{{ url('index.index') }}"method="GET">
-        <button type="submit">Revenir au magasin</button>
     </form>
 
 

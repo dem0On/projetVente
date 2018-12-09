@@ -31,7 +31,7 @@ class IndexController extends Controller
 //        }
 
         if($this->isGranted('ROLE_ADMIN')) {
-
+            return new Response($twig->render('accueil.html.twig'));
         }
         if($this->isGranted('ROLE_CLIENT')) {
             $produits=NULL;

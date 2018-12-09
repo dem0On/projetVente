@@ -90,4 +90,19 @@ class  CommandeController extends Controller{
         return new Response($twig->render('frontOff/consultCommande.html.twig',['lignes' => $detailsCommande]));
     }
 
+    /**
+     * @Route("/gestion/changeEtat", name="commande.changeEtat")
+     */
+    public function changeEtat(Request $request, Environment $twig, RegistryInterface $doctrine){
+        $numero = $_GET['idCommande'];
+        $detailsCommande = $doctrine->getRepository(Commande::class)->find($numero);
+        $etatSuivant = $doctrine->getRepository(Etat::class)->findOneBy(array('nom'=>"Expédié"));
+        $detailsCommande->setEtatId($etatSuivant);
+        $em = $this->container->get('doctrine')->getManager();
+        $em->persist($detailsCommande);
+        $em->flush();
+        return $this->redirectToRoute('gestion.commande.show');
+
+    }
+
 }

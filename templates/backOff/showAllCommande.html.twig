@@ -24,7 +24,12 @@
                         <td><form action="{{ url('commande.description',{id: commande.id}) }}" method="GET">
                                 <input type="hidden" name="idCommande" value="{{ commande.id }}">
                                 <button type="submit">Détails</button>
-                            </form></td>
+                            </form>
+                            <form action="{{ url('commande.changeEtat',{id: commande.id}) }}" method="GET">
+                                <input type="hidden" name="idCommande" value="{{ commande.id }}">
+                                <button type="submit">Changer etat commande</button>
+                            </form>
+                        </td>
 
                     </tr>
                     </tbody>

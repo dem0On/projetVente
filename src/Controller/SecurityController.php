@@ -18,6 +18,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
+
 class SecurityController extends Controller
 {
     /**
@@ -62,6 +63,13 @@ class SecurityController extends Controller
             dump($user);
             $em->persist($user);
             $em->flush();
+            $message = (new \Swift_Message('hello Email'))
+                ->setSubject('Inscription site web')
+                ->setFrom('dem0onn70290@gmail.com')
+                ->setTo($user->getEmail())
+                ->setContentType('text/html')
+                ->setBody('Bonjour, merci pour votre inscription sur notre site. Vous pouvez commencez à acheter via ce lien :');
+            $this->get('mailer')->send($message);
             return $this->redirectToRoute('index.index');
         }
         return new Response($twig->render('security/formUser.html.twig',['form'=>$form->createView()]));

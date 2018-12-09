@@ -82,4 +82,13 @@ class UserController extends Controller{
         }
         return new Response($twig->render('frontOff/modifyPassword.html.twig',['form'=>$form->createView()]));
     }
+
+    /**
+     * @Route("/gestion/showUser", name="gestion.user.show")
+     */
+    public function showAll(Request $request, Environment $twig, RegistryInterface $doctrine,UserPasswordEncoderInterface $encoder)
+    {
+        $users = $doctrine->getRepository(User::class)->findAll();
+        return new Response($twig->render('backOff/showClient.html.twig',['users'=>$users]));
+    }
 }

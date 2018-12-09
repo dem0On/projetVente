@@ -1,0 +1,28 @@
+{% extends "base.html.twig" %}
+{% block body %}
+
+    <h1> Gestion des utilisateurs </h1>
+
+    <div class="row">
+    <div class="col-7">
+        <table class="table table-bordered">
+            <caption>Utilisateurs</caption>
+            <thead>
+            <tr><th>id</th><th>nom utilisateur</th><th>mail</th><th>roles</th>
+            </tr>
+            </thead>
+            {% for user in users if users is not empty %}
+                <tbody>
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.getRoles()[0] }}</td>
+                </tr>
+                </tbody>
+            {% endfor %}
+        </table>
+    </div>
+
+
+{% endblock %}
