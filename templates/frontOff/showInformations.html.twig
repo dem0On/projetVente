@@ -1,0 +1,35 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+
+    <h1> Vos informations personnelle </h1>
+    <div class="row">
+        <div class="col-7">
+            <b>Votre pseudo : {{ infos[0].username }}</b>
+            <br>
+            Votre email  : {{ infos[0].email }}
+            <br>
+            <form action="{{ url('user.modifyClient') }}" method="GET">
+                <button type="submit">Modifier mail/pseudo</button>
+            </form>
+            <form action="{{ url('user.modifyPassword') }}"method="GET">
+                <button type="submit">Modifier mot de passe</button>
+            </form>
+            <br>
+            <br>
+            <h4>Adresse de livraison:</h4>
+            <br>
+            Adresse :
+            <br>
+            Code postal:
+            <br>
+            Ville :
+            <br>
+            <form action="{{ url('infoUser.modify') }}" method="GET">
+                <button type="submit">Modifier adresse de livraison</button>
+            </form>
+        </div>
+    </div>
+
+
+{% endblock %}

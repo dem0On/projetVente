@@ -1,0 +1,18 @@
+{% extends "base.html.twig" %}
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+{% block body %}
+    <div class="container">
+        <h1>formulaire étudiant 2</h1>
+
+        {{ form_start(form) }}
+        {{ form_errors(form) }}
+
+        {{ form_row(form.pseudo) }}
+        {{ form_errors(form.pseudo) }}
+        {{ form_row(form.email) }}
+        {{ form_row(form.password) }}
+
+        {{ form_row(form.submit, { 'label': "S'inscrire" }) }}
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

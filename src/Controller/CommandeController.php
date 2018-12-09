@@ -73,4 +73,21 @@ class  CommandeController extends Controller{
         $detailsCommande = $doctrine->getRepository(LigneCommande::class)->findBy(array('commande_id'=>$_GET['idCommande']));
         return new Response($twig->render('frontOff/consultCommande.html.twig',['lignes' => $detailsCommande]));
     }
+
+    /**
+     * @Route("/gestion/showCommande", name="gestion.commande.show")
+     */
+    public function gestionAll(Request $request, Environment $twig, RegistryInterface $doctrine){
+        $commande = $doctrine->getRepository(Commande::class)->findAll();
+    return new Response($twig->render('backOff/showAllCommande.html.twig',['commandes' => $commande]));
+    }
+    /**
+    * @Route("/gestion/detailsCommande", name="commande.description")
+    */
+    public function description(Request $request, Environment $twig, RegistryInterface $doctrine){
+        $numero = $_GET['idCommande'];
+        $detailsCommande = $doctrine->getRepository(LigneCommande::class)->findBy(array('commande_id'=>$_GET['idCommande']));
+        return new Response($twig->render('frontOff/consultCommande.html.twig',['lignes' => $detailsCommande]));
+    }
+
 }

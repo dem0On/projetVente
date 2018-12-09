@@ -1,0 +1,36 @@
+{% extends "base.html.twig" %}
+
+
+
+{% block body %}
+
+    <h1> Commandes clients </h1>
+
+    <div class="row">
+        <div class="col-7">
+            <table class="table table-bordered">
+                <caption>Commandes</caption>
+                <thead>
+                <tr><th>id commande</th><th>nom utilisateur</th><th>etat</th><th>date</th><th>Actions</th>
+                </tr>
+                </thead>
+                {% for commande in commandes if commandes is not empty %}
+                    <tbody>
+                    <tr>
+                        <td>{{ commande.id }}</td>
+                        <td>{{ commande.getUserId().getUsername() }}</td>
+                        <td>{{ commande.etatId.getNom() }}</td>
+                        <td>{{ commande.getDate().format('Y-m-d') }}</td>
+                        <td><form action="{{ url('commande.description',{id: commande.id}) }}" method="GET">
+                                <input type="hidden" name="idCommande" value="{{ commande.id }}">
+                                <button type="submit">Détails</button>
+                            </form></td>
+
+                    </tr>
+                    </tbody>
+                {% endfor %}
+            </table>
+        </div>
+
+
+{% endblock %}
