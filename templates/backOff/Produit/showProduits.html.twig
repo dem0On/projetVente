@@ -8,13 +8,13 @@
 			</tr>
 			</thead>
 			<tbody>
-            {% for produit in produits if produit is not empty %}
+            {% for stock in stocks if stocks is not empty %}
 
 				<tr>
-					<td>{{produit.nom}}</td><td>{{produit.id}}</td><td>{{produit.TypeProduitId.libelle  | default('pas de type')}}
-					<td>{{ produit.stock | default(0) }}</td>
+					<td>{{stock.nom}}</td><td>{{stock.id}}</td><td>{{stock.TypeProduitId.libelle  | default('pas de type')}}
+					<td>{{ stock.stock | default(0) }}</td>
 					<td>
-						<a href="{{ path('produit.edit', {id: produit.id}) }}"  class="btn btn-primary m-1 p-1">modifier</a>
+						<a href="{{ path('produit.addStock', {id: stock.id}) }}"  class="btn btn-primary m-1 p-1">modifier</a>
 					</td>
 				</tr>
             {% endfor %}

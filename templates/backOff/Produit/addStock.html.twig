@@ -1,0 +1,11 @@
+{% extends "base.html.twig" %}
+{% block body %}
+    Produit
+
+    {{ form_start(form) }}
+    {#{{ form_errors(form) }}#}
+
+    {{ form_row(form.stock) }}
+    {{ form_row(form.submit, { 'label': 'Valider' }) }}
+    {{ form_end(form) }}
+{% endblock %}

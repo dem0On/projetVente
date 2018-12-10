@@ -64,7 +64,7 @@ class SecurityController extends Controller
             $em->persist($user);
             $em->flush();
             $message = (new \Swift_Message('hello Email'))
-                ->setSubject('Inscription site web')
+                ->setSubject('Confirmation inscription')
                 ->setFrom('dem0onn70290@gmail.com')
                 ->setTo($user->getEmail())
                 ->setContentType('text/html')
@@ -81,5 +81,35 @@ class SecurityController extends Controller
     public function showInfo(Request $request, Environment $twig, RegistryInterface $doctrine){
         $infoPerso = $doctrine->getRepository(User::class)->findBy(array('id'=>$this->getUser()->getId()));
         return new Response($twig->render('frontOff/showInformations.html.twig',['infos'=>$infoPerso]));
+    }
+    /**
+     * @Route("/changePassword", name="changePassword")
+     */
+    public function changePass(Request $request, Environment $twig, RegistryInterface $doctrine,UserPasswordEncoderInterface $encoder){
+        $form = $this->createFormBuilder()
+            ->add('email', EmailType::class)
+            ->add('password', PasswordType::class)
+            ->add('submit', SubmitType::class)
+            ->getForm();
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+            $em = $this->container->get('doctrine')->getManager();
+            $data = $form->getData();
+            $user = $doctrine->getRepository(User::class)->findBy(array('email'=>$data['email']));
+            $message = (new \Swift_Message('hello Email'))
+                ->setSubject('Confirmation changement de mot de passe')
+                ->setFrom('dem0onn70290@gmail.com')
+                ->setTo($data['email'])
+                ->setContentType('text/html')
+                ->setBody('Information, votre mot de passe à été changé');
+            $this->get('mailer')->send($message);
+            $password = $encoder->encodePassword($user[0],$data['password']);
+            $user[0]->setPassword($password);
+            $em->persist($user[0]);
+            $em->flush();
+            return $this->redirectToRoute('index.index');
+        }
+        return new Response($twig->render('security/formPassword.html.twig',['form'=>$form->createView()]));
     }
 }

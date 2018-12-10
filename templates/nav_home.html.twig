@@ -27,19 +27,19 @@
                     {% if is_granted('ROLE_ADMIN') %} (role : Admin )
                     {% elseif is_granted('ROLE_CLIENT') %} (role : Client ) {% endif %}
             </span>
-                <a class="btn btn-outline-success" type="button" href="{{path('logout') }}">
+                <a class="btn btn-outline-success" type="button" href="{{url('logout') }}">
                     Se déconnecter
                 </a>
 
             {% else %}
-                <a class="btn btn-outline-success" type="button" href="{{path('login') }}">
+                <a class="btn btn-outline-success" type="button" href="{{url('login') }}">
                     Se connecter
                 </a>
-                <a class="btn btn-outline-success" type="button" href="{{ path('registration') }}">
-                    s'inscrir
+                <a class="btn btn-outline-success" type="button" href="{{ url('registration') }}">
+                    s'inscrire
                 </a>
 
-                <a class="btn btn-outline-success" type="button" href="{#{path('changePassword') }#}">
+                <a class="btn btn-outline-success" type="button" href="{{url('changePassword') }}">
                     mot de passe oublié
                 </a>
             {% endif %}
